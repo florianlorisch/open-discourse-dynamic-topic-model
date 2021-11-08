@@ -14,17 +14,16 @@ from tqdm import tqdm_notebook as tqdm
 from pprint import pprint
 
 ##
-df = pd.read_csv("/Users/florianlorisch/PycharmProjects/scientificProject/corpus/speeches/speeches_preprocessed_grüne.csv")
+df = pd.read_csv("/Users/florianlorisch/PycharmProjects/open-discourse-dynamic-topic-model/corpus/speeches/speeches_preprocessed_grüne.csv")
 print(df.head())
 
 speeches = df["speechContent"]
 print(speeches.head())
-speeches.desribe()
 ##
 nlp = German()
 
 # My list of stop words.
-stop_list = ["Herr","Frau","Präsident","Freunde","Freundinnen","Kollegen","Kolleginnen","[SEP]"]
+stop_list = ["herr","frau","präsident","freunde","freundinnen","kollegen","kolleginnen","[SEP]"]
 
 # Updates spaCy's default stop words list with my additional words.
 nlp.Defaults.stop_words.update(stop_list)
@@ -49,9 +48,6 @@ def tokenize(speeches):
         else:
             lda_tokens.append(token.lower_)
     return lda_tokens
-
-ldatok = tokenize(speeches[0])
-ldatok[0:10]
 ##
 import nltk
 nltk.download('wordnet')
@@ -86,7 +82,7 @@ text_data[1000]
 ##
 import pickle
 
-file = open("/Users/florianlorisch/PycharmProjects/scientificProject/corpus/speeches/speeches_plain_grüne.pkl",'wb')
+file = open("/Users/florianlorisch/PycharmProjects/open-discourse-dynamic-topic-model/corpus/speeches/speeches_plain_grüne.pkl",'wb')
 pickle.dump(text_data, file)
 file.close()
 ##
@@ -94,7 +90,7 @@ file.close()
 from gensim import corpora
 
 dictionary = corpora.Dictionary(text_data)
-dictionary.save("/Users/florianlorisch/PycharmProjects/scientificProject/corpus/speeches/own_dictionary.gensim")
+dictionary.save("/Users/florianlorisch/PycharmProjects/open-discourse-dynamic-topic-model/corpus/speeches/own_dictionary.gensim")
 ##
 corpus = [dictionary.doc2bow(text) for text in text_data]
 ##
@@ -105,7 +101,7 @@ NUM_TOPICS = 20
 ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics = NUM_TOPICS, id2word=dictionary, passes=15)
 
 # unser eigentliches LDA-Model
-ldamodel.save("/Users/florianlorisch/PycharmProjects/scientificProject/models/model1.gensim")
+ldamodel.save("/Users/florianlorisch/PycharmProjects/open-discourse-dynamic-topic-model/models/model1.gensim")
 
 # Ausgabe der entsprechenden gewünschten Topics
 topics = ldamodel.print_topics(num_words=10)

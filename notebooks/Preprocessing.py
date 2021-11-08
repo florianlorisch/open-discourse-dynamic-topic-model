@@ -2,7 +2,7 @@ import pandas as pd
 import feather
 #import os
 ##
-df = pd.read_feather("/Users/florianlorisch/PycharmProjects/scientificProject/corpus/speeches/speeches.feather")
+df = pd.read_feather("/Users/florianlorisch/PycharmProjects/open-discourse-dynamic-topic-model/corpus/speeches.feather")
 print(df.head(10))
 ##
 convert_dict = {'id': int,
@@ -25,18 +25,26 @@ df=df.drop(df.loc[df['speechContent'].str.len() < 1000].index) #214478
 #%% Regex
 df.replace({'speechContent': '(\\n)'}, {'speechContent': ' '}, regex=True, inplace=True)
 
-df.replace({'speechContent': '(\.\B)'}, {'speechContent': ' . [SEP] '}, regex=True, inplace=True)
-df.replace({'speechContent': '(\!)'}, {'speechContent': ' ! [SEP] '}, regex=True, inplace=True)
-df.replace({'speechContent': '(\?)'}, {'speechContent': ' ? [SEP] '}, regex=True, inplace=True)
+df.replace({'speechContent': '(\.\B)'}, {'speechContent': ' . '}, regex=True, inplace=True)
+
+df.replace({'speechContent': '(\!)'}, {'speechContent': ' ! '}, regex=True, inplace=True)
+
+df.replace({'speechContent': '(\?)'}, {'speechContent': ' ? '}, regex=True, inplace=True)
 
 df.replace({'speechContent': '(\,)'}, {'speechContent': ' , '}, regex=True, inplace=True)
 
 df.replace({'speechContent': '(\(\{\S*\}\))'}, {'speechContent': ' '}, regex=True, inplace=True)
 
 df.replace({'speechContent': '(\\xa0–)'}, {'speechContent': ''}, regex=True, inplace=True)
+
 df.replace({'speechContent': '(\\xa0)'}, {'speechContent': ' '}, regex=True, inplace=True) # Check ist Okay
+
 df.replace({'speechContent': '(\–\\xa0)'}, {'speechContent': ''}, regex=True, inplace=True)
+
 df.replace({'speechContent': '(\\xad)'}, {'speechContent': ''}, regex=True, inplace=True)
+
+
+
 
 #%% Zuordnung zwischen Fraktion und FactionID
 
